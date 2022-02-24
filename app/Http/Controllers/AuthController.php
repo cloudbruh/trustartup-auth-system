@@ -51,7 +51,11 @@ class AuthController extends Controller
         );
         $jwt = JWT::encode($payload, env('PRIVATE_KEY'), 'RS256');
 
-        return response()->json($jwt, 200);
+        return response()->json([
+            'token' => $jwt,
+            'id' => $user->id,
+            'roles' => $roles,
+        ], 200);
 
         //$decoded = JWT::decode($jwt, new Key(env('PUBLIC_KEY'), 'RS256'));
         //dd($decoded);
@@ -93,6 +97,10 @@ class AuthController extends Controller
         );
         $jwt = JWT::encode($payload, env('PRIVATE_KEY'), 'RS256');
 
-        return response()->json($jwt, 200);
+        return response()->json([
+            'token' => $jwt,
+            'id' => $response->object()->id,
+            'roles' => [],
+        ], 200);
     }
 }
