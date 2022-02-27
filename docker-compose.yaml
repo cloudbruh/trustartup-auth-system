@@ -1,14 +1,13 @@
-services: 
+services:
   auth-system:
     build: .
     extra_hosts:
       - "host.docker.internal:host-gateway"
-    environment: 
+    environment:
       - APP_ENV=production
       - APP_KEY=yIcTghI5UqQY6z3IjTCupEbHMYPH73gJ
       - APP_DEBUG=true
-      - API_USER_ATTEMPT=http://host.docker.internal:8084/attempt
-      - API_USER_CREATE=http://host.docker.internal:8084/user
+      - API_USER=http://host.docker.internal:8084
       - |
         PRIVATE_KEY=
         -----BEGIN RSA PRIVATE KEY-----
@@ -49,6 +48,6 @@ services:
         jrUycVRhYZFM6wDYEMdooQR46Ie/tLXyr4k47qlI+LkxIAkkAerlF9D8uqEm7R2t
         AgMBAAE=
         -----END PUBLIC KEY-----
-    command: ["/bin/sh", "-c", "php -S 0.0.0.0:80 -t public"]
+    command: [ "/bin/sh", "-c", "php -S 0.0.0.0:80 -t public" ]
     ports:
       - "8087:80"
