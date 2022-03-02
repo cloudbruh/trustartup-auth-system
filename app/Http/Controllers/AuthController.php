@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
+use App\Helpers\Responder;
 
 class AuthController extends Controller
 {
@@ -31,7 +32,7 @@ class AuthController extends Controller
         if ($response->getStatusCode() == 404)
             return response()->json(['message' => 'Not found'], 404);
         else if (!$response->successful())
-            return response()->json(['message' => $response->body()], 500);
+            return Responder::error($response, 'API_USER:user:attempt');
 
         $user = $response->object();
         if (!Hash::check($password, $user->password))
@@ -46,7 +47,6 @@ class AuthController extends Controller
 
         return response()->json([
             'token' => $jwt,
-            'id' => $user->id,
         ], 200);
     }
 
@@ -69,7 +69,7 @@ class AuthController extends Controller
         if ($response->getStatusCode() == 200)
             return response()->json(['message' => 'Already exists'], 409);
         else if($response->getStatusCode() != 404)
-            return response()->json(['message' => $response->body()], 500);
+            return Responder::error($response, 'API_USER:user:attempt');
 
         $response = Http::post(env('API_USER') . '/user', [
             'name' => $request->name,
@@ -79,7 +79,7 @@ class AuthController extends Controller
         ]);
 
         if (!$response->successful())
-            return response()->json(['message' => $response->body()], 500);
+            return Responder::error($response, 'API_USER:user:create');
 
         $payload = array(
             "iss" => env('APP_URL'),
@@ -90,7 +90,6 @@ class AuthController extends Controller
 
         return response()->json([
             'token' => $jwt,
-            'id' => $response->object()->id,
         ], 200);
     }
 }
