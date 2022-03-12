@@ -6,7 +6,7 @@ services:
     environment:
       - APP_ENV=production
       - APP_KEY=yIcTghI5UqQY6z3IjTCupEbHMYPH73gJ
-      - APP_DEBUG=true
+      - APP_DEBUG=false
       - API_USER=http://host.docker.internal:8084
       - |
         PRIVATE_KEY=
